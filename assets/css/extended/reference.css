@@ -1,0 +1,15 @@
+.post-content h2[id^="reference"] {
+    font-size: 1.4rem;
+    color: var(--primary);
+    font-weight: bold;
+    border-top: 2px solid var(--border); /* 2px 粗实线，非常明显 */
+    padding-top: 1.0rem;  /* 线条和 "Reference" 文字之间的距离 */
+    margin-top: 4rem;     /* 线条和上方正文内容的距离（拉大一点更好看） */
+    margin-bottom: 1.0rem;
+    border-bottom: none;  /* 去掉底部的线，避免重复 */
+    padding-bottom: 0;
+}
+.post-content h2[id^="reference"]::before {
+    content: "📚";
+    font-size: 1.1rem;
+}

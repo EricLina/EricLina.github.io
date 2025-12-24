@@ -1,0 +1,110 @@
+/* --- 引用框容器 --- */
+.citation-box {
+    margin-top: 0rem;
+    border: 1px solid var(--border);
+    background: var(--entry);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(219, 219, 219, 0.05);
+}
+
+.citation-header {
+    background: var(--tertiary);
+    padding: 0.1rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;              /* 关键：让左右两边对齐 */
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.citation-header h3 {
+    margin: 0;
+    font-size: 0.9rem; /* 小号字体 */
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.citation-license {
+    margin: 0;
+    font-size: 0.7rem; /* 小号字体 */
+    color: var(--secondary);
+    text-align: right;
+}
+
+.citation-license a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* --- 内容区域 --- */
+.citation-content {
+    /* 原来是 padding: 1rem; */
+    /* 改为：上 1rem, 右 1rem, 下 0, 左 1rem */
+    padding: 0.2rem 0.3rem 0.2rem 0.3rem;
+
+    /* 确保内容块本身是垂直排列的，并且没有多余间隙 */
+    display: flex;
+    flex-direction: column;
+}
+
+
+.citation-code-wrapper {
+    position: relative;
+    margin-bottom: 0;
+}
+
+/* --- 复制按钮 --- */
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--primary);
+    color: var(--theme);
+    border: none;
+    border-radius: 4px;
+    padding: 3px 6px; /* 小号内边距 */
+    font-size: 0.7rem; /* 小号字体 */
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.copy-button:hover {
+    opacity: 1;
+}
+
+/* --- 代码块样式 (黑白) --- */
+.bw-code .highlight {
+    background: #f5f5f5 !important;
+    filter: grayscale(100%);
+}
+
+:root[data-theme='dark'] .bw-code .highlight {
+    background: #2e2e33 !important;
+    filter: grayscale(100%) brightness(1.5);
+}
+
+.citation-code pre {
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+    background: transparent !important;
+}
+
+.citation-code code {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.75rem; /* 小号字体 */
+    background: transparent !important;
+    border: none !important;
+    color: inherit !important;
+    line-height: 1.4;
+}
+.citation-code code,
+.citation-code span {
+    color: var(--primary) !important; 
+    background: transparent !important;
+}

@@ -1,0 +1,48 @@
+{{ $page := .Page }}
+{{ $date := $page.Date }}
+{{ $year := $date.Format "2006" }}
+{{ $monthEnglish := $date.Format "Jan" }}
+
+{{ $bibtex := printf `@online{ChiensBlog-%s,
+  title={%s},
+  author={ChienLiang},
+  year={%s},
+  month={%s},
+  note={%s},
+}` $page.File.UniqueID $page.Title $year $monthEnglish $page.Permalink }}
+
+
+<hr style="border-top: 1px solid var(--border); margin: 1rem 0;">
+<div class="citation-box">
+    <div class="citation-header">
+        <h3>🔖 Cite this blog</h3>
+        <div class="citation-license">
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 
+        </div>
+    </div>
+    
+    <div class="citation-content">
+        <div class="citation-code-wrapper">
+            <button class="copy-button" onclick="copyCitation(this)">Copy</button>
+            <div class="citation-code bw-code">
+                {{ highlight $bibtex "bibtex" "" }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyCitation(btn) {
+    const codeBlock = btn.nextElementSibling.querySelector('code');
+    const text = codeBlock.innerText;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        btn.innerText = 'Copied!';
+        setTimeout(() => {
+            btn.innerText = 'Copy';
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+</script>

@@ -1,0 +1,9 @@
+.first-entry {
+    background: var(--entry);       /* 使用主题定义的卡片背景色（白/深灰） */
+    border: 1px solid var(--border); /* 加上边框，保持风格一致 */
+    border-radius: var(--radius);    /* 圆角 */
+    padding: var(--gap);             /* 内边距 */
+    
+    /* 如果你觉得第一篇文章太大了，想让它和下面的一样大，可以取消注释下面这行 */
+    min-height: unset !important;
+}

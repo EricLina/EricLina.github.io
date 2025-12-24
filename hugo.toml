@@ -1,0 +1,21 @@
+baseURL = 'https://EricLina.github.io/'
+languageCode = 'en-us'
+title = 'ChiensLog'
+theme = 'PaperMod'
+
+[params]
+  author = "ChiengLiang"
+  description = "My Blog Introduction"
+  ShowCopyRight = true
+
+[menu]
+  [[menu.main]]
+    identifier = "posts"
+    name = "Blogs"
+    url = "/posts/"
+    weight = 10
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 20
