@@ -9,7 +9,7 @@ unsafe = false
 > **TL;DR**: **Linear Attention** fails when attention distributions are "peaky" (high dynamic range) because it acts as a low-pass filter. **Sparse Attention** approximates Softmax by keeping an **Active Set ($\mathcal{A}_i$)** of high scores and discarding a **Pruned Set ($\mathcal{A}_i^c$)**. The approximation error is determined by the Residual Weight ($\epsilon_i$)—the probability mass lost in the pruned set. We model this using **Signal-to-Noise Ratio (SNR)**: High SNR (peaky distribution) yields low error, while low SNR (flat distribution) leads to significant bias. The method is exponentially sensitive to Recall Failure: missing even a single high-scoring token (where $s_{\max}^c \approx m_i$) causes the SNR to collapse and the error to spike.
 
 
-## Review: The approximation limiation of Linear Attention
+# Review: The approximation limiation of Linear Attention
 In the previous post, we established that Linear Attention operates as a first-order Taylor approximation of the Softmax function:
 $$
 e^x \approx 1 + x
@@ -25,8 +25,8 @@ $$
 $$
 When $\Delta_i$ is large (implying a "peaky" or sparse distribution), the linear approximation diverges significantly from Softmax. Linear Attention effectively acts as a low-pass filter, smoothing out the sharp distinctions that Softmax creates.
 
-## Analyzing Sparse Attention's Approximation Error.
-### Formulation: A Set-Theoretic View
+# 1. Analyzing Sparse Attention's Approximation Error.
+## 1.1 Formulation: A Set-Theoretic View
 
 To analyze the error rigorously, we first define Sparse Attention as a domain restriction operation on the standard Softmax.
 
@@ -55,7 +55,7 @@ Sparse Attention approximates this by assuming the probability weight in $\mathc
 O_i^{\text{sparse}} = \frac{\sum_{j \in \mathcal{A}_i} e^{s_{ij}-m_i} v_j}{\sum_{j \in \mathcal{A}_i} e^{s_{ij}-m_i}} = \frac{N(\mathcal{A}_i)}{D(\mathcal{A}_i)}
 $$`
 
-### Approximation Error of Sparse Attention
+## 1.2 Approximation Error of Sparse Attention
 
 The approximation error $\mathcal{E}_i$ is the difference between the full attention output and the sparse approximation:
 
@@ -86,7 +86,7 @@ This equation tells us that the error is the product of two factors:
 Therefore, Sparse Attention fails if either the pruned set contains significant probability weight (selection failure) or if the pruned values are vastly different from the active values (contextual loss).
 
 
-### Signal-Noise Ratio(SNR) View
+## 1.3 Signal-Noise Ratio(SNR) View
 We can reinterpret the error term using a Signal-to-Noise Ratio (SNR) analogy. Let the "Signal" be the contribution from the Active Set ($\mathcal{A}_i$) and the "Noise" be the contribution from the Pruned Set ($\mathcal{A}_i^c$).
 
 The full attention output is a convex combination of the signal and the noise:
@@ -105,7 +105,7 @@ From this perspective, the goal of any sparse attention mechanism is to maximize
 *   **High SNR (Peaky Distribution)**: If the attention distribution is very sharp, almost all probability weight is concentrated in $\mathcal{A}_i$. Here, $\epsilon_i \to 0$, and $O_i^{\text{full}} \approx O_i^{\text{sparse}}$. Sparse attention works perfectly.
 *   **Low SNR (Flat Distribution)**: If the attention is diffuse (e.g., uniform), significant weight leaks into $\mathcal{A}_i^c$. Here, $\epsilon_i$ is large, and ignoring the "noise" term $O_i^{\text{noise}}$ introduces significant bias.
 
-### Analysis of the error term $\epsilon_i$
+## 1.4 Analysis of the error term $\epsilon_i$
 
 To understand when Sparse Attention fails, we must analyze the behavior of the residual weight term $\epsilon_i$. Recall that:
 
@@ -136,7 +136,7 @@ In this lower bound, the **Peak-to-Noise Term** plays the dominant role. To maxi
 2.  **Decrease the Denominator**: Reduce $|\mathcal{A}_i^c|$ by filtering out irrelevant tokens.
 
 
-### Sparse Attention's error under limited block granularity
+## 1.5 Sparse Attention's error under limited block granularity
 
 In the derivation above, we assumed an ideal selection policy where `$\mathcal{A}_i$` contains the strict top-$k$ scores, making $s_{k+1}$ the upper bound of the pruned set. However, in practice—especially with block-sparse methods or approximate nearest neighbor search—we cannot guarantee strict ordering. We might miss a high-scoring token or include a lower-scoring one.
 

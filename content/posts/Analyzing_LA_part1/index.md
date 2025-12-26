@@ -1,5 +1,5 @@
 +++
-date = '2024-12-24T17:14:58+08:00'
+date = '2025-12-24T17:14:58+08:00'
 draft = false
 title = 'Analyzing Linear Attention as a First-Order Approximation of Softmax'
 math = true
