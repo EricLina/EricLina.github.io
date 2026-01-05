@@ -6,27 +6,12 @@ math = true
 unsafe = false
 +++
 
-> **TL;DR**: This post examines **Fast Weight Programming** and **Test-Time Training (TTT)** as mechanisms for dynamic memory in neural networks. We illustrate how TTT updates hidden states on-the-fly using gradient descent, exemplified by the **Delta Rule**. Furthermore, we unify modern linear attention architectures (e.g., Mamba, RWKV, RetNet) under the TTT framework and compare their computational characteristics with RNNs and Self-Attention.
-
-# 1.Fast weight programing
-![alt text](asserts/fastweight.png)
-**Fast Weight Programming** is a mechanism that dynamically adjusts neural network weights based on the input sequence, enabling the model to maintain a form of short-term memory. Below is the abstract from the seminal paper *'Using Fast Weights to Attend to the Recent Past'*:
-> Until recently, research on artificial neural networks was largely restricted to systems with only two types of variable: **Neural activities** that represents the current or recent input and **weights** that learn to capture regularities among input, outputs and payoffs. However, synapses have dynamics at many different time-scales. Artificial neural networks might benefit from variables that change slower than activities but much faster than the standard weights. These **“fast weights”** can be used to store temporary memories of the recent past and they provide a neurally plausible way of implementing the type of attention to the past. By using fast weights we can avoid the need to store copies of neural activity patterns.
-
-Fast weights separates RNN's memory into two components to free up the its hidden state for computation rather than memorization:
-1.  **Slow weights ($W$)**: Standard RNN weights, learned via backpropagation, holding long-term knowledge.
-2.  **Fast weights ($A(t)$)**: Dynamic weights changing at every timestep via a Hebbian-like rule, holding short-term memory of the recent past.
-
-**Update Rule (Hebbian Learning)**:
-The fast weights $A(t)$ are updated based on the outer product of the hidden state:
-$$
-A(t+1) = \lambda A(t) + \eta h(t)h(t)^T
-$$
-where $\lambda$ is the decay rate and $\eta$ is the learning rate.
+> **TL;DR**: This post summarizes how modern linear attention architectures (e.g., **Mamba, RWKV, RetNet**) can be unified under the **Test-Time Training (TTT)** framework. It reviews how TTT leverages **Fast Weight Programming** to update hidden states on-the-fly via gradient descent (exemplified by the **Delta Rule**), and contrasts this dynamic memory approach with traditional RNNs and the computationally expensive Self-Attention mechanism.
 
 
-# 2. Test Time Training (TTT)
-## 2.1 TTT Formulation
+
+# 1. Test Time Training (TTT)
+## 1.1 Formulation of the Test Time Training 
 Test-Time Training (TTT) retrieves data relevant to the input from the training set or knowledge base during inference to fine-tune the model, improving its performance in dynamic scenarios.
 
 Consider a one-dimensional sequence of $N$ tokens $\mathbf{x} = [x_1, x_2, \dots, x_N]$, where each token $x_i \in \mathbb{R}^d$. Following attention formulation, each input token $x_i$ is projected into query ($q_i$), key ($k_i$), and value ($v_i$) vectors. For clarity, we assume all these vectors $q_i, k_i, v_i \in \mathbb{R}^d$.
@@ -45,7 +30,7 @@ o = f_W (q)
 $$
 where the updated fast weights $W$ are used to compute the output vector $o$ given the query $q$. The per-token TTT layer iteratively performs the update and apply operations on each token $x_i$ in sequence.
 
-## 2.2 Example: DeltaRule under TTT framework
+## 1.2 Example: The DeltaRule under TTT framework
 DeltaNet reinterprets the recurrence as online gradient **descent** on a reconstruction objective:
 
 $$
@@ -66,7 +51,10 @@ $$`
 
 This rule—the classical **delta rule**—treats $\mathbf{S}$ as a learnable associative memory that continually corrects itself toward the mapping $\boldsymbol{k}_t \mapsto \boldsymbol{v}_t$.
 
-## 2.3 Unified Linear Attention mechanisums under TTT framework
+
+# 2. Attention mechanisums under TTT framework
+
+## 2.1 Unified Linear Attention mechanisums under TTT framework
 
 An overview of different attention mechanisms through the lens of state updating rules and their learning objective under the TTT framework. All normalizer terms and activation/kernel functions are ignored for brevity.
 
@@ -85,8 +73,7 @@ An overview of different attention mechanisms through the lens of state updating
 
 > For GDN and KDA, the update can be viewed as performing an Stochastic Gradient Descent (SGD) process on the decayed state `$\tilde{\mathbf{S}}$`, that is, `$\mathbf{S}_t = \tilde{\mathbf{S}}_{t-1} - \nabla_{\tilde{\mathbf{S}}_{t-1}}\mathcal{L}$`, where `$\tilde{\mathbf{S}}_{t-1}$` is decayed by scalar or fine-grained gate.
 
-
-# 3.Comparison of Sequence Modeling Paradigms under TTT framework
+## 2.2 Sequence Modeling Paradigms under TTT framework
 
 Here is a comparison of three sequence modeling approaches from the perspective of Test-Time Training:
 
@@ -97,6 +84,28 @@ Here is a comparison of three sequence modeling approaches from the perspective 
 | **Naive TTT** | $W_0 = f.\text{params}()$ | $W_t = W_{t-1} - \eta\nabla \ell(W_{t-1}; x_t)$ | $z_t = f(x_t; W_t)$ | $O(1)$ |
 
 Self-attention differs fundamentally from RNNs and TTT in how it manages memory. While RNNs and TTT compress historical context into a fixed-size hidden state (resulting in constant $O(1)$ cost per token), Self-attention maintains an ever-growing list known as the Key-Value (KV) cache. Its "update rule" is trivial—simply appending new keys and values—but its "output rule" requires scanning the entire history to compute the attention matrix. This lack of compression grants Self-attention superior expressivity for long contexts, but it comes at the price of linear computational complexity $O(t)$ per token as the sequence lengthens.
+
+
+
+# 3. TTT and Fast weight programing
+## 3.1 What is Fast weight programing?
+![alt text](asserts/fastweight.png)
+**Fast Weight Programming** is a mechanism that dynamically adjusts neural network weights based on the input sequence, enabling the model to maintain a form of short-term memory. Below is the abstract from the seminal paper *'Using Fast Weights to Attend to the Recent Past'*:
+> Until recently, research on artificial neural networks was largely restricted to systems with only two types of variable: **Neural activities** that represents the current or recent input and **weights** that learn to capture regularities among input, outputs and payoffs. However, synapses have dynamics at many different time-scales. Artificial neural networks might benefit from variables that change slower than activities but much faster than the standard weights. These **“fast weights”** can be used to store temporary memories of the recent past and they provide a neurally plausible way of implementing the type of attention to the past. By using fast weights we can avoid the need to store copies of neural activity patterns.
+
+Fast weights separates RNN's memory into two components to free up the its hidden state for computation rather than memorization:
+1.  **Slow weights ($W$)**: Standard RNN weights, learned via backpropagation, holding long-term knowledge.
+2.  **Fast weights ($A(t)$)**: Dynamic weights changing at every timestep via a Hebbian-like rule, holding short-term memory of the recent past.
+
+**Update Rule (Hebbian Learning)**:
+The fast weights $A(t)$ are updated based on the outer product of the hidden state:
+$$
+A(t+1) = \lambda A(t) + \eta h(t)h(t)^T
+$$
+where $\lambda$ is the decay rate and $\eta$ is the learning rate.
+## 3.2 Connection between TTT and Fast weight programing
+TTT can be viewed as a generalized framework for Fast Weight Programming. In TTT, the "hidden state" effectively serves as the **fast weights** that are updated on-the-fly. While the original Fast Weights used a specific Hebbian update rule, TTT employs gradient descent on a local objective (like the reconstruction loss in DeltaNet) to update these weights. This perspective unifies various linear attention models: they are essentially maintaining a fast-changing memory matrix (the KV cache or state $S$) optimized to represent the recent context, distinct from the static model parameters (slow weights).
+
 
 
 
