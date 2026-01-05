@@ -1,0 +1,22 @@
+{{- with site.Params.homeInfoParams }}
+<div class="home-info" style="margin-bottom: var(--gap);">
+    <style>
+        .home-info .entry-content a {
+            color: #58a6ff;
+            text-decoration: underline;
+        }
+        .home-info .entry-content a:hover {
+            opacity: 0.8;
+        }
+    </style>
+    <header class="entry-header">
+        <h1 style="font-size: 1.5rem;">{{ .Title | markdownify }}</h1>
+    </header>
+    <div class="entry-content" style="font-size: 1.0rem; margin-bottom: 0.0rem;">
+        {{ .Content | markdownify }}
+    </div>
+    <footer class="entry-footer" style="margin-bottom: 1.0rem;">
+        {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+    </footer>
+</div>
+{{- end -}}

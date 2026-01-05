@@ -3,6 +3,20 @@ languageCode = 'en-us'
 title = 'ChiensLog'
 theme = 'PaperMod'
 
+[params.homeInfoParams]
+    Title = "👋Welcome to Chien's Log"
+    Content = "Hi, I am **ChengLiang**, a third-year Master's student at [Department of Computer Science and Technology](https://cs.nju.edu.cn/), [Nanjing University(NJU)](https://www.nju.edu.cn/en/), advised by [Prof. Limin Wang](https://wanglimin.github.io/). I am currently an research intern at Kuaishou Kling Team, supervised by [Dr. Liang Hou](https://liang-hou.github.io/) and [Dr. Xin Tao](https://www.xtao.website/). My research interests focus on **Long-context Modeling** and **Efficient Video Understanding and Generation**. I will share some notes and thoughts in this [Blog](https://ericlina.github.io/posts/). Feel free to reach out for any discussions."
+
+[[params.socialIcons]]
+    name = "email"
+    url = "mailto:Lc1190301804@outlook.com"
+[[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/EricLina"
+[[params.socialIcons]]
+    name = "blog"
+    url = "https://ericlina.github.io/"
+
 [params]
   author = "ChiengLiang"
   description = "My Blog Introduction"
