@@ -16,7 +16,7 @@ Test-Time Training (TTT) retrieves data relevant to the input from the training 
 
 Consider a one-dimensional sequence of $N$ tokens $\mathbf{x} = [x_1, x_2, \dots, x_N]$, where each token $x_i \in \mathbb{R}^d$. Following attention formulation, each input token $x_i$ is projected into query ($q_i$), key ($k_i$), and value ($v_i$) vectors. For clarity, we assume all these vectors $q_i, k_i, v_i \in \mathbb{R}^d$.
 
-Test-Time Training (TTT) introduces a neural network with rapidly adaptable weights (**fast weights**) that are updated during both training and inference to dynamically store context information. This contrasts with the **slow weights** (i.e., model parameters) that are frozen during inference. Formally, TTT defines fast weights in the form of a neural network: $f_W (\cdot) : \mathbb{R}^d \to \mathbb{R}^d$ parameterized by the fast weights $W$, and it involves two primary operations:
+TTT introduces a neural network with rapidly adaptable weights (**fast weights**) that are updated during both training and inference to dynamically store context information. This contrasts with the **slow weights** (i.e., model parameters) that are frozen during inference. Formally, TTT defines fast weights in the form of a neural network: $f_W (\cdot) : \mathbb{R}^d \to \mathbb{R}^d$ parameterized by the fast weights $W$, and it involves two primary operations:
 
 **Update operation**:
 $$
@@ -87,12 +87,14 @@ Self-attention differs fundamentally from RNNs and TTT in how it manages memory.
 
 
 
-# 3. TTT and Fast weight programing
-## 3.1 What is Fast weight programing?
-![alt text](asserts/fastweight.png)
-**Fast Weight Programming** is a mechanism that dynamically adjusts neural network weights based on the input sequence, enabling the model to maintain a form of short-term memory. Below is the abstract from the seminal paper *'Using Fast Weights to Attend to the Recent Past'*:
+# 3. TTT and Fast Weight Programing
+## 3.1 What is Fast Weight Programming?
+
+Below is the abstract from the paper *'Using Fast Weights to Attend to the Recent Past'*:
 > Until recently, research on artificial neural networks was largely restricted to systems with only two types of variable: **Neural activities** that represents the current or recent input and **weights** that learn to capture regularities among input, outputs and payoffs. However, synapses have dynamics at many different time-scales. Artificial neural networks might benefit from variables that change slower than activities but much faster than the standard weights. These **“fast weights”** can be used to store temporary memories of the recent past and they provide a neurally plausible way of implementing the type of attention to the past. By using fast weights we can avoid the need to store copies of neural activity patterns.
 
+![alt text](asserts/fastweight.png)
+**Fast Weight Programming** is a mechanism that dynamically adjusts neural network weights based on the input sequence, enabling the model to maintain a form of short-term memory. 
 Fast weights separates RNN's memory into two components to free up the its hidden state for computation rather than memorization:
 1.  **Slow weights ($W$)**: Standard RNN weights, learned via backpropagation, holding long-term knowledge.
 2.  **Fast weights ($A(t)$)**: Dynamic weights changing at every timestep via a Hebbian-like rule, holding short-term memory of the recent past.
@@ -103,7 +105,7 @@ $$
 A(t+1) = \lambda A(t) + \eta h(t)h(t)^T
 $$
 where $\lambda$ is the decay rate and $\eta$ is the learning rate.
-## 3.2 Connection between TTT and Fast weight programing
+## 3.2 Connection between TTT and Fast Weight Programming
 TTT can be viewed as a generalized framework for Fast Weight Programming. In TTT, the "hidden state" effectively serves as the **fast weights** that are updated on-the-fly. While the original Fast Weights used a specific Hebbian update rule, TTT employs gradient descent on a local objective (like the reconstruction loss in DeltaNet) to update these weights. This perspective unifies various linear attention models: they are essentially maintaining a fast-changing memory matrix (the KV cache or state $S$) optimized to represent the recent context, distinct from the static model parameters (slow weights).
 
 
