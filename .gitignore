@@ -2,3 +2,4 @@
 /resources/_gen/
 /assets/js/bundle.js
 .hugo_build.lock
+*.DS_Store
