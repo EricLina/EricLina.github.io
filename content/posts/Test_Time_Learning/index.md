@@ -52,9 +52,9 @@ $$`
 This rule—the classical **delta rule**—treats $\mathbf{S}$ as a learnable associative memory that continually corrects itself toward the mapping $\boldsymbol{k}_t \mapsto \boldsymbol{v}_t$.
 
 
-# 2. Attention mechanisums under TTT framework
+# 2. Attention mechanisms under TTT framework
 
-## 2.1 Unified Linear Attention mechanisums under TTT framework
+## 2.1 Unified Linear Attention mechanisms under TTT framework
 
 An overview of different attention mechanisms through the lens of state updating rules and their learning objective under the TTT framework. All normalizer terms and activation/kernel functions are ignored for brevity.
 
@@ -71,7 +71,7 @@ An overview of different attention mechanisms through the lens of state updating
 | GDN | `$\frac{{\beta_t}}{2}\|\tilde{\mathbf{S}}_{t-1}^\top \boldsymbol{k}_t-\boldsymbol{v}_t\|^2$` | `$\mathbf{S}_t = (\mathbf{I}-{\beta}_t\boldsymbol{k}_t\boldsymbol{k}_t^\top)\alpha_t\mathbf{S}_{t-1}+{\beta}_t\boldsymbol{k}_t\boldsymbol{v}_t^\top$` |
 | KDA | `$\frac{\beta_t}{2}\|\tilde{\mathbf{S}}_{t-1}^\top {\boldsymbol{k}_t}-\boldsymbol{v}_t\|^2$` | `$\mathbf{S}_t = (\mathbf{I} -\beta_t\boldsymbol{k}_t\boldsymbol{k}_t^\top)\operatorname{Diag}(\boldsymbol{\alpha}_t)\mathbf{S}_{t-1}+{\beta_t}\boldsymbol{k}_t\boldsymbol{v}_t^\top$` |
 
-> For GDN and KDA, the update can be viewed as performing an Stochastic Gradient Descent (SGD) process on the decayed state `$\tilde{\mathbf{S}}$`, that is, `$\mathbf{S}_t = \tilde{\mathbf{S}}_{t-1} - \nabla_{\tilde{\mathbf{S}}_{t-1}}\mathcal{L}$`, where `$\tilde{\mathbf{S}}_{t-1}$` is decayed by scalar or fine-grained gate.
+> For GDN and KDA, the update can be viewed as performing a Stochastic Gradient Descent (SGD) process on the decayed state `$\tilde{\mathbf{S}}$`, that is, `$\mathbf{S}_t = \tilde{\mathbf{S}}_{t-1} - \nabla_{\tilde{\mathbf{S}}_{t-1}}\mathcal{L}$`, where `$\tilde{\mathbf{S}}_{t-1}$` is decayed by scalar or fine-grained gate.
 
 ## 2.2 Sequence Modeling Paradigms under TTT framework
 
@@ -87,7 +87,7 @@ Self-attention differs fundamentally from RNNs and TTT in how it manages memory.
 
 
 
-# 3. TTT and Fast Weight Programing
+# 3. TTT and Fast Weight Programming
 ## 3.1 What is Fast Weight Programming?
 
 Below is the abstract from the paper *'Using Fast Weights to Attend to the Recent Past'*:
