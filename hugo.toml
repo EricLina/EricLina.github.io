@@ -2,6 +2,7 @@ baseURL = 'https://EricLina.github.io/'
 languageCode = 'en-us'
 title = 'ChiensLog'
 theme = 'PaperMod'
+buildFuture = true
 
 [params.homeInfoParams]
     Title = "👋Welcome to Chien's Log"
